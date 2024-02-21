@@ -5,6 +5,7 @@ What we're using:
    - Bootstrap Maybe 
 Pages we need:
   -  Landing page(O-Auth for sign in)
+  -  On Boarding
   -  Listings page
   -  Profile page
   -  Connections page shows the mentors you've connect with (google Calendar)
