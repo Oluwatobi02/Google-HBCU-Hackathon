@@ -1,1 +1,10 @@
 This is the frontend.
+What we're using:
+   - Vanilla JS
+   - Tailwind css
+   - Bootstrap Maybe 
+Pages we need:
+  -  Landing page(O-Auth for sign in)
+  -  Listings page
+  -  Profile page
+  -  Connections page shows the mentors you've connect with (google Calendar)
