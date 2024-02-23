@@ -46,6 +46,15 @@
                     </span>
                     <button id="profile">Profile</button>
                 </span>
+
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
+                        </svg>
+                    </span>
+                    <button id="logout">Logout</button>
+                </span>
             </nav>
         </div>
         <!-- Main Content -->
@@ -87,9 +96,22 @@
                 // Make a request to your Google login route when the button is clicked
                 window.location.href = 'http://localhost:5000/dashboard';
               });
+
+              document.getElementById('logout').addEventListener('click', () => {
+                fetch('http://localhost:3000/logout', {
+                    method: 'GET',
+                    credentials: 'include', // Include credentials to send the session cookie
+                  })
+                  .then(() => {
+                    console.log('Logged out');
+                    // Redirect to the sign-in page
+                    window.location.href = 'http://localhost:5000/'; // Replace with your actual sign-in page URL
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                  });
+              });
         
-    let googleId;
-    let is_international;
      fetch('http://localhost:3000/api/user', {
     credentials: 'include', // Include credentials to send the session cookie
 })
@@ -100,10 +122,12 @@
 .then(data => {
  googleId = data.googleId;
  is_international = data.international;
+ localStorage.setItem('is_international', is_international);
 })
 .catch((error) => {
     console.error('Error:', error);
 });
+let is_international = localStorage.getItem('is_international');
 let mentorurl = is_international === 'Yes' ? 'http://localhost:3000/international-users' : 'http://localhost:3000/non-international-users';
 console.log(mentorurl, 'mentor url')
  fetch(mentorurl, {
@@ -174,7 +198,7 @@ connectButtons.forEach(button => {
     })
     .then(data => {
       console.log(data);
-      location.reload() // This will be 'Connection request sent'
+      button.parentElement.remove() // This will be 'Connection request sent'
     })
     .catch((error) => {
       console.error('Error:', error);

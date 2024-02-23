@@ -135,10 +135,7 @@ app.get('/international-users', async (req, res) => {
 
     const googleId = req.user.googleId;
     const users = await User.find({international: 'Yes', googleId: {$ne: googleId}});
-    const filteredUsers = users.find({
-      googleId: { $nin: req.user.connectionsSent }
-    })
-    res.json(filteredUsers);
+    res.json(users);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -190,10 +187,7 @@ app.post('/sendconnectionrequest', async (req, res) => {
       { googleId: otherUserId },
       { $push: { connectionRequests: userId } }
     );
-    await User.updateOne(
-      { googleId: userId },
-      { $push: { connectionsSent: otherUserId } }
-    )
+
     res.json({ message: 'Connection request sent' });
   } catch (err) {
     console.error(err);
@@ -215,6 +209,17 @@ app.post('/acceptConnectionRequest', async (req, res) => {
     await User.updateOne(
       { googleId: otherUserId },
       { $push: { connections: userId } }
+    );
+    
+    await User.updateOne(
+      { googleId: otherUserId },
+      { $pull: { connectionRequests: userId }, $push: { connections: userId } }
+    );
+
+    // Find the user with the otherUserId and add the userId to their matches array
+    await User.updateOne(
+      { googleId: userId },
+      { $push: { connections: otherUserId } }
     );
 
     res.send('Connection request accepted');
