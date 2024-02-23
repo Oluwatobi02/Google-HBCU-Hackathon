@@ -11,7 +11,16 @@ const UserSchema = new mongoose.Schema({
     googleId: String,
     firstName: String,
     lastName: String,
-    email: String
+    email: String,
+    university: String,
+    major: String,
+    classification: String,
+    country: String,
+    international: String,
+    connections: Array,
+    description: String,
+    connectionRequests: Array,
+    
 });
 
 module.exports = mongoose.model('User', UserSchema, 'users');
