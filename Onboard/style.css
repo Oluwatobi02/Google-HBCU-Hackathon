@@ -1,7 +1,10 @@
 body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: blanchedalmond;
-    background-color: blanchedalmond;
+    
 }
+
+
 
 .Welcome {
     text-align:center
@@ -22,7 +25,8 @@ text-align: left;
 }
 
 .infoEnter{
-   background-color: rgb(255, 255, 255);
+
+   background-color: rgba(255, 255, 255, 0.648);
    padding: 100px;
    margin: 41px;
    text-align:center;
@@ -33,6 +37,8 @@ text-align: left;
    margin-left: 32%;
    align-items: center; 
    justify-content: center; 
+   font-family:Verdana, Geneva, Tahoma, sans-serif
+
 
 
 
@@ -46,4 +52,24 @@ text-align: left;
 .bigger{
     height: 200px;
     
+}
+
+input[type="submit"]{
+    border-radius: 50px;
+    background-color: #00C385;
+    color: rgb(255, 255, 255);
+    width: 200px; 
+    height: 50px; 
+    font-size: 30px;
+    border: 5px;
+    box-shadow: #000000;
+
+
+
+}
+.forms{
+
+    background-image: url(Image/World\ connection.png);
+    background-repeat: no-repeat;
+    background-position: center;
 }
