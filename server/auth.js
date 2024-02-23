@@ -35,6 +35,7 @@ passport.use(new GoogleStrategy({
             description: '',
             connections: [],
             connectionRequests: [],
+            connectionsSent: [],
           });
           user = await newUser.save();
           return done(null, {...user._doc, isNewUser: true });

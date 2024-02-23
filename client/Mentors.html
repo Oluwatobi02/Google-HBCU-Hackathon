@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture Connect</title>
+</head>
+<body>
+    <div class="flex h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white border-r border-gray-200">
+            <div class="py-4 px-6" style="background-color: #0FFF50;">
+                <h1 class="text-lg font-semibold text-white" >Culture Connect</h1>
+            </div>
+            <nav class="mt-6">
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </span>
+                    <button id="dashboard">Dashboard</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10V4m0 6v10m-7-3a9 9 0 0 1 9-9m-9 9a9 9 0 0 0 9 9m-9-9a9 9 0 0 1 9 9M5 21a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM19 21a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path>
+                        </svg>
+                    </span>
+                    <button id="mentors">Mentors</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
+                    <button id="connections">Connections</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
+                    <button id="profile">Profile</button>
+                </span>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 p-8" style="background-color: #F8F8FF;">
+            <h1 class="text-4xl font-semibold text-lime-300 mb-5"> Avaiable Mentors</h1>
+            <div id="mentors-container" class="grid grid-cols-3 gap-4 p-2">
+                <!-- <div class=" rounded-md h-full w-80 shadow-sm flex flex-col p-3 bg-white">
+                    <img src="" alt="" width="50px" height="px-50" class="float-left">
+                    <p class="name font-semibold text-lg mb-4">Name</p>
+                    <p class="description mb-3">Description</p>
+                    <div class="flex justify-between gap-2 mb-2">
+                        <span class="location text-sm">Location</span>
+                        <span class="university text-sm">University</span>
+                        <span class="classification text-sm">Classification</span>
+                    </div>
+                    <button class="rounded-md text-white w-20 text-lg font-semibold" style="background-color: #0FFF50;">Connect</button>
+                </div> -->
+
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/59a49571e0.js" crossorigin="anonymous"></script>
+    <script>
+            
+            document.getElementById('profile').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/profile';
+              });
+              
+              
+              document.getElementById('connections').addEventListener('click', function() {
+                  // Make a request to your Google login route when the button is clicked
+                  window.location.href = 'http://localhost:5000/connections';
+              });
+              
+              document.getElementById('dashboard').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/dashboard';
+              });
+        
+    let googleId;
+    let is_international;
+     fetch('http://localhost:3000/api/user', {
+    credentials: 'include', // Include credentials to send the session cookie
+})
+.then(response => {
+    console.log(response)
+  return response.json()
+})
+.then(data => {
+ googleId = data.googleId;
+ is_international = data.international;
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+let mentorurl = is_international === 'Yes' ? 'http://localhost:3000/international-users' : 'http://localhost:3000/non-international-users';
+console.log(mentorurl, 'mentor url')
+ fetch(mentorurl, {
+        credentials: 'include',
+     })
+     .then(response => {
+        if (!response.ok) {
+            return response.text();
+        }
+        return response.json();
+    })
+     .then(mentors => {
+        console.log(mentors)
+        if (typeof mentors ==='string') {
+            console.error('Error:', mentors)
+        } else {
+        const container = document.getElementById('mentors-container');
+
+// Create a new element for each mentor
+mentors.forEach(mentor => {
+  const mentorElement = document.createElement('div');
+  mentorElement.className = 'rounded-md h-full w-80 shadow-sm flex flex-col p-3 bg-white';
+  mentorElement.innerHTML = `
+    <p class="name font-semibold text-lg mb-4">${mentor.firstName}</p>
+    <p class="description mb-3">${mentor.description}</p>
+    <div class="flex justify-between gap-2 mb-2">
+      <span class="location text-sm">${mentor.country}</span>
+      <span class="university text-sm">${mentor.university}</span>
+      <span class="classification text-sm">${mentor.classification}</span>
+    </div>
+    <button data-user-id="${mentor.googleId}" class="connect-button rounded-md text-white w-20 text-lg font-semibold" style="background-color: #0FFF50;">Connect</button>
+  `;
+
+  // Add the mentor element to the container
+  container.appendChild(mentorElement);
+});
+
+    // Get all the "Connect" buttons
+    const connectButtons = document.querySelectorAll('.connect-button');
+console.log(connectButtons, 'connect buttons')
+
+// Add a click event listener to each button
+connectButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Get the other user's ID from the button's data attribute
+    const otherUserId = button.dataset.userId;
+    console.log(otherUserId, 'other user id')
+
+    // Send a connection request
+    fetch('http://localhost:3000/sendconnectionrequest', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: googleId, // Replace this with the current user's ID
+        otherUserId: otherUserId
+      })
+    })
+    .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            throw new TypeError('not a json response')
+        }
+    })
+    .then(data => {
+      console.log(data);
+      location.reload() // This will be 'Connection request sent'
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  });
+});
+
+
+     }})
+     .catch((err) => {
+        console.error('Error:', err)
+     })
+
+
+
+ 
+    </script>
+</body>
+</html>

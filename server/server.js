@@ -101,12 +101,13 @@ app.post('/api/onboarding', async (req, res) => {
     user.classification = req.body.classification;
     user.country = req.body.country;
     user.international = req.body.international;
+    user.description = req.body.description;
 
     // Save the updated user
     await user.save();
 
     // Send a response
-    res.redirect('http://localhost:5000/dashboard')
+    res.redirect('http://localhost:5000/mentors')
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'An error occurred' });
@@ -115,16 +116,15 @@ app.post('/api/onboarding', async (req, res) => {
 
 
 app.get('/feed', (req, res) => {
-  res.redirect('http://localhost:5000/dashboard')
+  res.redirect('http://localhost:5000/mentors')
     
 })
 
 
 app.get('/all-users', async (req, res) => {
-  const googleId = req.user.googleId
-  const users = await User.find({googleId: {$ne: req.user.googleId}})
+  const users = await User.find({googleId: {$ne: googleId}})
     
-  res.send(users)
+  res.json(users)
 })
 
 app.get('/international-users', async (req, res) => {
@@ -135,7 +135,10 @@ app.get('/international-users', async (req, res) => {
 
     const googleId = req.user.googleId;
     const users = await User.find({international: 'Yes', googleId: {$ne: googleId}});
-    res.send(users);
+    const filteredUsers = users.find({
+      googleId: { $nin: req.user.connectionsSent }
+    })
+    res.json(filteredUsers);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -150,7 +153,7 @@ app.get('/non-international-users', async (req, res) => {
 
     const googleId = req.user.googleId;
     const users = await User.find({international: 'No', googleId: {$ne: googleId}});
-    res.send(users);
+    res.json(users);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -178,20 +181,23 @@ app.get('/connections', async (req, res) => {
 
 
 
-app.post('/sendConnectionRequest', async (req, res) => {
+app.post('/sendconnectionrequest', async (req, res) => {
   try {
     const { userId, otherUserId } = req.body;
 
     // Find the user with the userId and add the otherUserId to their connectionRequests array
     await User.updateOne(
-      { googleId: userId },
-      { $push: { connectionRequests: otherUserId } }
+      { googleId: otherUserId },
+      { $push: { connectionRequests: userId } }
     );
-
-    res.send('Connection request sent');
+    await User.updateOne(
+      { googleId: userId },
+      { $push: { connectionsSent: otherUserId } }
+    )
+    res.json({ message: 'Connection request sent' });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

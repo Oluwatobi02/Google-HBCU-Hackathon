@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema({
     connections: Array,
     description: String,
     connectionRequests: Array,
+    connectionsSent: Array,
     
 });
 

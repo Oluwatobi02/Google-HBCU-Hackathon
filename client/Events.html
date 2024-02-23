@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture Connect</title>
+</head>
+<body>
+    <div class="flex h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white border-r border-gray-200">
+            <div class="py-4 px-6" style="background-color: #0FFF50;">
+                <h1 class="text-lg font-semibold text-white" >Culture Connect</h1>
+            </div>
+            <nav class="mt-6">
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </span>
+                    <button id="dashboard">Dashboard</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10V4m0 6v10m-7-3a9 9 0 0 1 9-9m-9 9a9 9 0 0 0 9 9m-9-9a9 9 0 0 1 9 9M5 21a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM19 21a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path>
+                        </svg>
+                    </span>
+                    <button id="mentors">Mentors</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
+                    <button id="connections">Connections</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
+                    <button id="profile">Profile</button>
+                </span>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <h1 class="justify-center text-7xl font-sans font-bold">Connect with students from different cultures</h1>
+            
+
+        </div>
+    </div>
+    <script>
+        <script src="https://cdn.tailwindcss.com"></script>
+       
+            document.getElementById('profile').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/profile';
+              });
+              
+              document.getElementById('mentors').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/mentors';
+              });
+              
+              document.getElementById('connections').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/connections';
+              });
+              
+              document.getElementById('dashboard').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/dashboard';
+              });
+          
+        
+    </script>
+</body>
+</html>

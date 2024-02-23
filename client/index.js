@@ -55,3 +55,29 @@ fetch('http://localhost:3000/logout', {
 .catch((error) => {
   console.error('Error:', error);
 });
+
+
+//buttons
+document.getElementById('profile').addEventListener('click', function() {
+  // Make a request to your Google login route when the button is clicked
+  window.location.href = 'http://localhost:5000/profile';
+});
+
+document.getElementById('mentor').addEventListener('click', function() {
+  // Make a request to your Google login route when the button is clicked
+  window.location.href = 'http://localhost:5000/mentors';
+});
+
+document.getElementById('connections').addEventListener('click', function() {
+  // Make a request to your Google login route when the button is clicked
+  window.location.href = 'http://localhost:5000/connections';
+});
+
+document.getElementById('dashboard').addEventListener('click', function() {
+  // Make a request to your Google login route when the button is clicked
+  window.location.href = 'http://localhost:5000/dashboard';
+});
+document.getElementById('events').addEventListener('click', function() {
+  // Make a request to your Google login route when the button is clicked
+  window.location.href = 'http://localhost:5000/events';
+});
