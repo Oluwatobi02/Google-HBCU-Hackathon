@@ -43,18 +43,7 @@ document.getElementById('onboardingForm').addEventListener('submit', function(ev
 
 
 // Logout functionality
-fetch('http://localhost:3000/logout', {
-  method: 'GET',
-  credentials: 'include', // Include credentials to send the session cookie
-})
-.then(() => {
-  console.log('Logged out');
-  // Redirect to the sign-in page
-  window.location.href = 'http://localhost:5000/'; // Replace with your actual sign-in page URL
-})
-.catch((error) => {
-  console.error('Error:', error);
-});
+
 
 
 //buttons

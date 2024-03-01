@@ -194,8 +194,22 @@ app.post('/sendconnectionrequest', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+app.get('/showconnectionrequest', async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send('Unauthorized');
+    }
 
-app.post('/acceptConnectionRequest', async (req, res) => {
+    const googleId = req.user.googleId;
+    const user = await User.findOne({ googleId: googleId });
+    const connectionsrequests = await User.find({ googleId: { $in: user.connectionRequests } }); 
+    res.json(connectionsrequests);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+})
+app.post('/acceptconnectionrequest', async (req, res) => {
   try {
     const { userId, otherUserId } = req.body;
 

@@ -44,14 +44,22 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </span>
+                    <button id="connection-request">Connection Requests</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
                     <button id="profile">Profile</button>
                 </span>
             </nav>
         </div>
         <!-- Main Content -->
         <div class="flex-1 p-8">
-            <div><h1 class="font-semibold text-4xl "> Connections!</h1></div>
-            <div style="width:900px; height: 550px;" id="connection-container" class="p-3">
+            <div><h1 class="font-semibold text-4xl "> Connection Requests!</h1></div>
+            <div style="width:900px; height: 550px;" id="connectionrequest-container" class="p-3">
                 <!-- <div class=" rounded-md h-20 w-full shadow-sm  bg-white p-3 flex justify-between items-center mb-2">
                     <img src="" alt="" width="50px" height="px-50" class="float-left">
                     <p class="font-semibold text-lg">Name</p>
@@ -61,7 +69,7 @@
                     <button class="rounded-md text-white w-20 text-base font-semibold" style="background-color: #0FFF50;">E-Mail</button>
                     <button class="rounded-md text-white w-20 text-base font-semibold" style="background-color: #0FFF50;">Meet</button>
 
-                </div> -->
+                </div>  -->
 
                 
             </div>
@@ -79,6 +87,10 @@
                 // Make a request to your Google login route when the button is clicked
                 window.location.href = 'http://localhost:5000/mentors';
               });
+              document.getElementById('connections').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/connections';
+              });
               
          
               
@@ -90,8 +102,20 @@
             //     // Make a request to your Google login route when the button is clicked
             //     window.location.href = 'http://localhost:5000/events';
             //   });
+              
+fetch('http://localhost:3000/api/user', {
+    credentials: 'include', // Include credentials to send the session cookie
+})
+.then(response => {
+    console.log(response)
+  return response.json()
+})
+.then(data => {
+    console.log(data)
+    let googleId = data.googleId
 
-fetch('http://localhost:3000/connections', {
+    
+fetch('http://localhost:3000/showconnectionrequest', {
     credentials: 'include',
 })
 .then(response => {
@@ -106,23 +130,72 @@ fetch('http://localhost:3000/connections', {
             console.error('Error:', connections)
         } 
         else {
-            const container = document.getElementById('connection-container');
+            const container = document.getElementById('connectionrequest-container');
 
             connections.forEach(connection => {
-                const connectionDiv = document.createElement('div');
-                connectionDiv.classList.add('rounded-md', 'h-20', 'w-full', 'shadow-sm', 'bg-white', 'p-3', 'flex', 'justify-between', 'items-center', 'mb-2');
-                connectionDiv.innerHTML = `
+                const connectionRequestDiv = document.createElement('div');
+                connectionRequestDiv.classList.add('rounded-md', 'h-20', 'w-full', 'shadow-sm', 'bg-white', 'p-3', 'flex', 'justify-between', 'items-center', 'mb-2');
+                connectionRequestDiv.innerHTML = `
                     <p class="font-semibold text-lg">${connection.firstName}</p>
                     <span class="text-sm">${connection.country}</span>
                     <span class="text-sm">${connection.university}</span>
                     <span class="text-sm">${connection.classification}</span>
-                    <button class="rounded-md text-white w-20 text-base font-semibold" style="background-color: #0FFF50;">E-Mail</button>
-                    <button class="rounded-md text-white w-20 text-base font-semibold" style="background-color: #0FFF50;">Meet</button>
+                    <button class="rounded-md text-white w-20 text-base font-semibold" style="background-color: #0FFF50;">Decline</button>
+                    <button data-user-id="${connection.googleId}" class="accept-button rounded-md text-white w-20 text-base font-semibold" style="background-color: #0FFF50;">Accept</button>
                 `;
-                container.appendChild(connectionDiv);
+
+          
+                container.appendChild(connectionRequestDiv);
             });
+                // Get all the "Connect" buttons
+    const acceptButtons = document.querySelectorAll('.accept-button');
+console.log(acceptButtons, 'accept buttons')
+
+// Add a click event listener to each button
+acceptButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Get the other user's ID from the button's data attribute
+    const otherUserId = button.dataset.userId;
+    console.log(otherUserId, 'other user id')
+
+    // Send a connection request
+    fetch('http://localhost:3000/acceptconnectionrequest', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: googleId, // Replace this with the current user's ID
+        otherUserId: otherUserId
+      })
+    })
+    .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            throw new TypeError('not a json response')
         }
     })
+    .then(data => {
+      console.log(data);
+      button.parentElement.remove() // This will be 'Connection request sent'
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  });
+});
+        }
+    })
+
+
+})
+.catch((err => {
+    console.log(err)
+}))
+
             
          
     </script>

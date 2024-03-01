@@ -44,6 +44,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </span>
+                    <button id="connection-request">Connection Requests</button>
+                </span>
+                <span class="flex items-center py-2 px-4 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                    <span class="mr-2">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
                     <button id="profile">Profile</button>
                 </span>
 
@@ -91,6 +99,10 @@
                   // Make a request to your Google login route when the button is clicked
                   window.location.href = 'http://localhost:5000/connections';
               });
+              document.getElementById('connection-request').addEventListener('click', function() {
+                // Make a request to your Google login route when the button is clicked
+                window.location.href = 'http://localhost:5000/connectionrequests';
+              });
               
               document.getElementById('dashboard').addEventListener('click', function() {
                 // Make a request to your Google login route when the button is clicked
@@ -111,8 +123,9 @@
                     console.error('Error:', error);
                   });
               });
-        
-     fetch('http://localhost:3000/api/user', {
+        let is_international;
+
+fetch('http://localhost:3000/api/user', {
     credentials: 'include', // Include credentials to send the session cookie
 })
 .then(response => {
@@ -122,14 +135,12 @@
 .then(data => {
  googleId = data.googleId;
  is_international = data.international;
- localStorage.setItem('is_international', is_international);
-})
-.catch((error) => {
-    console.error('Error:', error);
-});
-let is_international = localStorage.getItem('is_international');
-let mentorurl = is_international === 'Yes' ? 'http://localhost:3000/international-users' : 'http://localhost:3000/non-international-users';
-console.log(mentorurl, 'mentor url')
+ console.log(is_international)
+
+
+ console.log(is_international)
+let mentorurl = is_international === 'Yes' ? 'http://localhost:3000/non-international-users' : 'http://localhost:3000/international-users';
+
  fetch(mentorurl, {
         credentials: 'include',
      })
@@ -211,6 +222,12 @@ connectButtons.forEach(button => {
      .catch((err) => {
         console.error('Error:', err)
      })
+ 
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+
 
 
 

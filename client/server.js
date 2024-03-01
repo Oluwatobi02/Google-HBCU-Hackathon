@@ -24,6 +24,10 @@ app.get('/connections', (req, res) => {
     res.sendFile(path.join(__dirname, '/Connections.html'))
 }
 )
+app.get('/connectionrequests', (req, res) => {
+    res.sendFile(path.join(__dirname, '/ConnectionRequests.html'))
+}
+)
 
 app.use(express.static(path.join(__dirname, '../client')));
 app.listen(5000, () => console.log('Frontend server listening on port 5000'));
